@@ -1,0 +1,175 @@
+<?php
+
+    /** @var \ScaliaGroup\AssistanceSystem\Block\ContactForm $block */
+
+    $viewModel = $block->getViewModel();
+
+?><form class="form" action="<?= $block->escapeUrl($block->getFormAction()) ?>" id="form" method="post" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset row">
+        <legend class="legend mb-2 col-12 px-4">
+            <span><?= $block->escapeHtml($block->getTitle()) ?></span>
+        </legend>
+        <div class="field note no-label d-block px-4">
+            <?= $block->escapeHtml($block->getMessage()) ?>
+        </div>
+
+        <div class="col-12"></div>
+
+        <div class="field type required col-md-3">
+            <label class="label" for="type"><span><?= $block->escapeHtml(__('Type')) ?></span></label>
+            <select name="type" id="type" class="select" data-validate="{required:true}">
+                <option value="">-</option>
+                <?php foreach($block->getTypes() as $id => $type):?>
+                    <option value="<?=$id?>" <?php if($viewModel->getValue('type') == $id):?> selected <?php endif?>><?= $type ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+
+        <div class="field name required col-md-3">
+            <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+            <div class="control">
+                <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?=$viewModel->getValue('name')?>" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+
+        <div class="field email required col-md-3">
+            <label class="label" for="email"><span><?= $block->escapeHtml(__('Email Address')) ?></span></label>
+            <div class="control">
+                <input name="email" id="email" title="<?= $block->escapeHtmlAttr(__('Email Address')) ?>"  value="<?=$viewModel->getValue('email')?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+        <div class="field phone col-md-3 required">
+            <label class="label" for="phone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <input name="phone" id="phone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" value="<?=$viewModel->getValue('phone')?>" class="input-text" type="tel" />
+            </div>
+        </div>
+        <div class="field required street col-md-3">
+            <label class="label" for="street"><span><?= $block->escapeHtml(__('Address')) ?></span></label>
+            <div class="control">
+                <input name="street" id="street" title="<?= $block->escapeHtmlAttr(__('Address')) ?>" value="<?=$viewModel->getValue('street')?>" class="input-text" type="text" />
+            </div>
+        </div>
+
+
+        <div class="field required postal_code col-md-2">
+            <label class="label" for="postal_code"><span><?= $block->escapeHtml(__('Postal Code')) ?></span></label>
+            <div class="control">
+                <input name="postal_code" id="postal_code" title="<?= $block->escapeHtmlAttr(__('Postal Code')) ?>"
+                       value="<?=$viewModel->getValue('postal_code')?>" class="input-text" type="text"/>
+            </div>
+        </div>
+        <div class="field required city col-md-3">
+            <label class="label" for="city"><span><?= $block->escapeHtml(__('City')) ?></span></label>
+            <div class="control">
+                <input name="city" id="city" title="<?= $block->escapeHtmlAttr(__('City')) ?>" value="<?=$viewModel->getValue('city')?>" class="input-text"
+                       type="text"/>
+            </div>
+        </div>
+
+        <div class="field required province col-md-2">
+            <label class="label" for="province"><span><?= $block->escapeHtml(__('County')) ?></span></label>
+            <div class="control">
+                <input name="province" id="province" title="<?= $block->escapeHtmlAttr(__('County')) ?>"
+                       value="<?=$viewModel->getValue('province')?>" class="input-text" type="text"/>
+            </div>
+        </div>
+
+        <div class="field required country col-md-2">
+            <label class="label" for="country"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
+            <div class="control">
+                <input name="country" id="country" title="<?= $block->escapeHtmlAttr(__('Country')) ?>"
+                       value="<?=$viewModel->getValue('country')?>" class="input-text" type="text"/>
+            </div>
+        </div>
+
+        <div class="field brand required col-md-4">
+            <label class="label" for="brand"><span><?= $block->escapeHtml(__('Brand')) ?></span></label>
+            <select name="product[brand]" id="brand" class="select">
+                <option value="">-</option>
+                <?php foreach($block->getBrands() as $brand):?>
+                <option <?php if(($viewModel->getValue('product')['brand'] ?? null) == $brand):?> selected <?php endif?>><?=$brand ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+
+        <div class="field sku col-md-2">
+            <label class="label" for="sku"><span><?= $block->escapeHtml(__('SKU')) ?></span></label>
+            <div class="control">
+                <input name="product[sku]" value="<?=$viewModel->getValue('product')['sku'] ?? null ?>" id="sku" title="<?= $block->escapeHtmlAttr(__('SKU')) ?>" class="input-text" type="text"/>
+            </div>
+        </div>
+        <div class="field product_name col-md-4">
+            <label class="label" for="product_name"><span><?= $block->escapeHtml(__('Product Name')) ?></span></label>
+            <div class="control">
+                <input name="product[name]" value="<?=$viewModel->getValue('product')['name'] ?? null ?>" id="product_name" title="<?= $block->escapeHtmlAttr(__('Product Name')) ?>" class="input-text" type="text"/>
+            </div>
+        </div>
+
+        <div class="field color col-md-2">
+            <label class="label" for="color"><span><?= $block->escapeHtml(__('Prod.Color')) ?></span></label>
+            <div class="control">
+                <input name="product[color]" value="<?=$viewModel->getValue('product')['color'] ?? null ?>" id="color" title="<?= $block->escapeHtmlAttr(__('Color')) ?>" class="input-text" type="text"/>
+            </div>
+        </div>
+
+
+        <div class="field product_notes col-md-6 required">
+            <label class="label" for="product_notes">
+                <span><?= $block->escapeHtml(__('Description')) ?></span>
+            </label>
+            <div class="control">
+                <textarea name="product[notes]" id="product_notes" class="input-text" cols="5" rows="3" data-validate="{required:true}"><?=$viewModel->getValue('product')['notes'] ?? null ?></textarea>
+            </div>
+        </div>
+
+        <div class="field notes col-md-6 required">
+            <label class="label" for="notes">
+                <span><?= $block->escapeHtml(__('Note')) ?></span>
+            </label>
+            <div class="control">
+                <textarea name="notes" id="notes" class="input-text" cols="5" rows="3" data-validate="{required:false}"><?=$viewModel->getValue('notes') ?? null ?></textarea>
+            </div>
+        </div>
+
+        <?php for($i = 1; $i < 6; $i++): ?>
+        <div class="field file<?=$i?> col-md-4">
+            <label class="label" for="file<?=$i?>">
+                <span><?= $block->escapeHtml(__('Attachment')) ?> <?=$i?></span>
+            </label>
+            <div class="control">
+                <input type="file" name="file<?=$i?>" id="file<?=$i?>" class="input-text">
+            </div>
+        </div>
+        <?php endfor ?>
+
+        <div class="field choice mgs-gdpr-checkbox col-md-12 required">
+            <input name="accept_gdpr" value="1" id="accept_gdpr" class="checkbox" type="checkbox" data-validate="{required:true}"/>
+            <label for="accept_gdpr" class="label"><span><?=$block->getPrivacyCheckBoxMessage() ?></span></label>
+        </div>
+
+        <div class="col-md-12">
+
+            <?= $block->getChildHtml('form.additional.info') ?>
+
+        </div>
+
+    </fieldset>
+    <div class="actions-toolbar mb-5">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value="" />
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "contact-form"
+            }
+        }
+    }
+</script>

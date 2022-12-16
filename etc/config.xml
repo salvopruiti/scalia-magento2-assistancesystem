@@ -1,0 +1,32 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sg_assistance_system>
+            <general>
+                <enabled>1</enabled>
+                <title></title>
+                <message></message>
+                <privacy></privacy>
+            </general>
+        </sg_assistance_system>
+        <customer>
+            <captcha>
+                <shown_to_logged_in_user>
+                    <sg_assistance_form>1</sg_assistance_form>
+                </shown_to_logged_in_user>
+                <always_for>
+                    <sg_assistance_form>1</sg_assistance_form>
+                </always_for>
+            </captcha>
+        </customer>
+        <captcha translate="label">
+            <frontend>
+                <areas>
+                    <sg_assistance_form>
+                        <label>Form Assistenza</label>
+                    </sg_assistance_form>
+                </areas>
+            </frontend>
+        </captcha>
+    </default>
+</config>
