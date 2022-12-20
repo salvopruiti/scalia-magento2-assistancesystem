@@ -1,0 +1,43 @@
+<?php
+
+?><form class="form" action="" id="form" method="get" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset row">
+        <legend class="legend mb-2 col-12 px-4">
+            <span>Verifica stato riparazione</span>
+        </legend>
+        <div class="field note no-label d-block px-4">
+
+        </div>
+
+        <div class="col-12"></div>
+
+        <div class="field type required col-md-3">
+            <label class="label" for="type"><span><?= $block->escapeHtml(__('Numero Pratica')) ?></span></label>
+            <input type="text" name="return_id" id="" value="<?=$_GET['return_id'] ?? null ?>" class="input-text" data-validate="{'required': true}">
+        </div>
+
+        <div class="col-md-12">
+
+            <?= $block->getChildHtml('form.additional.info') ?>
+
+        </div>
+
+    </fieldset>
+    <div class="actions-toolbar mb-5">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value="" />
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "contact-form"
+            }
+        }
+    }
+</script>
