@@ -77,6 +77,7 @@ class Index implements HttpGetActionInterface
         if(!$returnId) {
 
             $block->setTemplate('ScaliaGroup_AssistanceSystem::track/form.phtml');
+            return $resultPage;
 
         } else {
 
@@ -111,11 +112,11 @@ class Index implements HttpGetActionInterface
                 $block->setTemplate('ScaliaGroup_AssistanceSystem::track/track.phtml');
                 $block->setData('returnHTML', $response->getBody());
 
+                return $resultPage;
+
             } catch (LocalizedException $e) {
 
                 $this->messageManager->addErrorMessage($e->getMessage());
-
-                $block->setTemplate('ScaliaGroup_AssistanceSystem::track/form.phtml');
 
             } catch (\Exception $e) {
 
@@ -123,89 +124,13 @@ class Index implements HttpGetActionInterface
                 $this->messageManager->addErrorMessage(
                     __('An error occurred while processing your form. Please try again later.') .' ('. $e->getMessage() . ')'
                 );
-
-                $block->setTemplate('ScaliaGroup_AssistanceSystem::track/form.phtml');
             }
 
-            return $resultPage;
+
         }
 
-        return $resultPage;
+        return $this->context->getResultRedirectFactory()->create()->setPath('assistenza/track');
 
-
-
-
-        try {
-
-            $data = $this->_request->getParams();
-            $returnModelData = array_filter($data, fn($key) => !in_array($key, ['hideit','accept_gdpr', 'form_key']), ARRAY_FILTER_USE_KEY );
-
-
-            $folder = time() . '_' . $this->rand->getRandomString(10);
-            $path = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_DIR)->getAbsolutePath('sg_assistance_system/'.$folder);
-
-            $hasValidFiles = array_filter($this->_request->getFiles()->toArray(), fn($file) => $file['error'] == 0);
-            if(!$hasValidFiles)
-                throw new LocalizedException(new Phrase("Non hai inserito alcun allegato!"));
-
-            foreach($this->_request->getFiles() as $fileId => $file) {
-
-                if($file['error'])
-                    continue;
-
-                $uploaderFactory = $this->uploaderFactory->create(['fileId' => $fileId  ]);
-                $filename = $uploaderFactory;
-                $response[] = $uploaderFactory->save($path);
-
-            }
-
-            $returnModelData['attachments'] = $response;
-
-            $host = $this->config->getMiddlewareHost();
-            $access_token = $this->config->getMiddlewareAccessToken();
-
-            $client = new Client($host . "/api/v1/returns");
-
-            $client->setHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $access_token
-            ]);
-
-            $client->setMethod("post");
-            $client->setParameterPost($returnModelData);
-
-            $response = $client->send();
-
-            if($response->getStatusCode() != 200 && $this->config->getIsDebugMode()) {
-
-                $this->logger->debug("AssistanceSystemForm", [
-                    'url' => $client->getUri()->toString(),
-                    'status' => $response->getStatusCode(),
-                    'status_txt' => $response->getReasonPhrase(),
-                    'body' => json_decode($response->getBody(), true),
-                ]);
-
-                $body = json_decode($response->getBody(), true);
-                if(!isset($body['message'])) $body['message'] = __('Server Error');
-
-                throw new LocalizedException(new Phrase($body['message'] ?: __('Server Error')));
-
-            }
-
-            $this->context->getMessageManager()->addSuccessMessage("Il modulo è stato inviato correttamente!");
-
-        } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage($e->getMessage());
-
-        } catch (\Exception $e) {
-
-            $this->logger->critical($e);
-            $this->messageManager->addErrorMessage(
-                __('An error occurred while processing your form. Please try again later.') .' ('. $e->getMessage() . ')'
-            );
-        }
-
-        return $resultPage;
 
     }
 
